@@ -42,6 +42,18 @@ function App() {
     }
   }, [timestamp])
 
+  const [running, setRunning] = React.useState(false)
+  React.useEffect(() => {
+    if (running) {
+      _interval = setInterval(() => {
+        _inputRef.stepUp()
+        setTimestamp(Number(_inputRef.value))
+      }, 200)
+    } else {
+      clearInterval(_interval)
+    }
+  }, [running])
+
   return (
     <div className="App">
       { _formatDate(timestamp) }
@@ -66,15 +78,31 @@ function App() {
           />
         </MbMap> }
       </div>
-      <input type="range"
-        min={datesArray[0]}
-        max={datesArray[datesArray.length - 1]}
-        step={1000 * 60 * 15}
-        onInput={event => { setTimestamp(Number(event.currentTarget.value)) }}
-        style={{
-          width: '100%'
-        }}
-      />
+      <div style={{
+        display: 'flex'
+      }}>
+        <button
+          onClick={() => {
+            setRunning(!running)
+          }}
+          style={{
+            height: '25px'
+          }}
+        >
+          <span role="img" aria-label="play/pause">{ running ? '⏸' : '▶️'}</span>
+        </button>
+        <input type="range"
+          min={datesArray[0]}
+          max={datesArray[datesArray.length - 1]}
+          step={1000 * 60 * 15}
+          onInput={event => { setTimestamp(Number(event.currentTarget.value)) }}
+          style={{
+            width: '90vw',
+            height: '20px'
+          }}
+          ref={r => { _inputRef = r}}
+        />
+      </div>
     </div>
   );
 }
@@ -90,5 +118,9 @@ const _getFileName = (timestamp) => {
 }
 
 const _serverData = {}
+
+let _interval = false
+
+let _inputRef
 
 export default App;
