@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import { DateTime } from 'luxon'
 
 function App() {
   const datesArray = []
@@ -11,6 +12,13 @@ function App() {
   }
 
   const [timestamp, setTimestamp] = React.useState(minDate)
+
+  const [data, setData] = React.useState(_serverData[_getFileName(timestamp)])
+  if (typeof data === 'undefined') {
+    fetch(_getFileName(timestamp))
+      .then(response => response.json())
+      .then(json => { setData(json) })
+  }
 
   return (
     <div className="App">
@@ -32,5 +40,12 @@ const _formatDate = (timestamp) => {
   const d = new Date(timestamp)
   return d.toLocaleString()
 }
+
+const _getFileName = (timestamp) => {
+  const d = DateTime.fromMillis(timestamp)
+  return d.toFormat('yyyyMMddHHmm') + '.json'
+}
+
+const _serverData = {}
 
 export default App;
