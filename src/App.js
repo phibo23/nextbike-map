@@ -27,7 +27,7 @@ function App() {
           let features = []
           Object.keys(json.result).forEach(fc => {
             if (json.result[fc] !== null) {
-              features = features.concat(json.result[fc].features)
+              features = features.concat(json.result[fc].features.filter(f => f.properties.type === 'bike'))
             }
           })
           newData.features = features
