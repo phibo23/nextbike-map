@@ -1,5 +1,6 @@
 import React from 'react'
 import { DateTime } from 'luxon'
+import { MbMarkerLayer, MbMap } from '@raumobil/map-react'
 
 function App() {
   const datesArray = []
@@ -13,16 +14,53 @@ function App() {
 
   const [timestamp, setTimestamp] = React.useState(minDate)
 
-  const [data, setData] = React.useState(_serverData[_getFileName(timestamp)])
-  if (typeof data === 'undefined') {
-    fetch(_getFileName(timestamp))
-      .then(response => response.json())
-      .then(json => { setData(json) })
-  }
+  const [data, setData] = React.useState()
+  React.useEffect(() => {
+    let newData = _serverData[timestamp]
+    if (typeof newData === 'undefined') {
+      fetch(_getFileName(timestamp))
+        .then(response => response.json())
+        .then(json => {
+          const data = {
+            type: 'FeatureCollection',
+          }
+          let features = []
+          Object.keys(json.result).forEach(fc => {
+            if (json.result[fc] !== null) {
+              features = features.concat(json.result[fc].features)
+            }
+          })
+          data.features = features
+          _serverData[timestamp] = data
+          setData(data)
+        })
+    }
+  }, [timestamp])
 
   return (
     <div className="App">
       { _formatDate(timestamp) }
+      <div style={{
+        height: '90vh'
+      }}>
+        { data && <MbMap
+          accessToken="pk.eyJ1IjoicGJvaG5lbnN0ZW5nZWwiLCJhIjoiY2p5MGlicTJsMDJqMjNsbGgzeTZ1cGo0NCJ9.HG5qqanqqOLUF0ykgLMDdQ"
+          mbStyle="mapbox://styles/pbohnenstengel/cjy0ihz7o02pq1dqvn7t1x83b"
+          bounds={[[8.33417,48.950746],[8.480613,49.0554349]]}
+        >
+          <MbMarkerLayer
+            id="bikes"
+            data={data}
+            circleConfig={{
+              'circle-radius': 5,
+              'circle-color': 'red'
+            }}
+            smallIconStart={99}
+            smallIcon={<div/>}
+            largeIcon={<div/>}
+          />
+        </MbMap> }
+      </div>
       <input type="range"
         min={datesArray[0]}
         max={datesArray[datesArray.length - 1]}

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@raumobil/map-react": "^0.3.20",
     "luxon": "^1.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
