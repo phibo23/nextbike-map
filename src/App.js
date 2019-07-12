@@ -21,7 +21,7 @@ function App() {
       fetch('../dasfestnextbike_data/' + _getFileName(timestamp))
         .then(response => response.json())
         .then(json => {
-          const data = {
+          newData = {
             type: 'FeatureCollection',
           }
           let features = []
@@ -30,10 +30,15 @@ function App() {
               features = features.concat(json.result[fc].features)
             }
           })
-          data.features = features
-          _serverData[timestamp] = data
-          setData(data)
+          newData.features = features
+          _serverData[timestamp] = newData
+          setData(newData)
         })
+        .catch(e => {
+          console.log(e)
+        })
+    } else {
+      setData(newData)
     }
   }, [timestamp])
 
