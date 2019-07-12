@@ -56,7 +56,14 @@ function App() {
 
   return (
     <div className="App">
-      { _formatDate(timestamp) }
+      <p style={{
+        textAlign: 'center',
+        fontSize: 'larger',
+        margin: '5px',
+        fontFamily: 'sans-serif'
+      }}>
+        { _formatDate(timestamp) }
+      </p>
       <div style={{
         height: '90vh'
       }}>
