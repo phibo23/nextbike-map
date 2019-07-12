@@ -1,5 +1,6 @@
 {
   "name": "dasfestnextbike",
+  "homepage" : "https://www.phb23.io/coding/dasfestnextbike",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

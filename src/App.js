@@ -18,7 +18,7 @@ function App() {
   React.useEffect(() => {
     let newData = _serverData[timestamp]
     if (typeof newData === 'undefined') {
-      fetch(_getFileName(timestamp))
+      fetch('../dasfestnextbike_data/' + _getFileName(timestamp))
         .then(response => response.json())
         .then(json => {
           const data = {
