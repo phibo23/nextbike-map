@@ -4,7 +4,7 @@ import { MbMarkerLayer, MbMap } from '@raumobil/map-react'
 
 function App() {
   const datesArray = []
-  const minDate = Date.parse('2019-07-12 00:00')
+  const minDate = DateTime.fromFormat('201907120000', 'yyyyMMddHHmm').toMillis()
   const maxDate = Date.now()
   let date = minDate
   while (date < maxDate) {
@@ -102,6 +102,7 @@ function App() {
           min={datesArray[0]}
           max={datesArray[datesArray.length - 1]}
           step={1000 * 60 * 15}
+          value={timestamp}
           onInput={event => { setTimestamp(Number(event.currentTarget.value)) }}
           style={{
             width: '90vw',
