@@ -55,17 +55,28 @@ function App() {
   }, [running])
 
   return (
-    <div className="App">
-      <p style={{
-        textAlign: 'center',
-        fontSize: 'larger',
-        margin: '5px',
-        fontFamily: 'sans-serif'
-      }}>
-        { _formatDate(timestamp) }
-      </p>
+    <div
+      className="App"
+      style={{
+        display: 'flex',
+        height: '100vh',
+        flexFlow: 'column',
+      }}
+    >
       <div style={{
-        height: '90vh'
+        flex: 'none',
+      }}>
+        <p style={{
+          textAlign: 'center',
+          fontSize: 'larger',
+          margin: '5px',
+          fontFamily: 'sans-serif'
+        }}>
+          { _formatDate(timestamp) }
+        </p>
+      </div>
+      <div style={{
+        flex: 'auto',
       }}>
         { data && <MbMap
           accessToken="pk.eyJ1IjoicGJvaG5lbnN0ZW5nZWwiLCJhIjoiY2p5MGlicTJsMDJqMjNsbGgzeTZ1cGo0NCJ9.HG5qqanqqOLUF0ykgLMDdQ"
@@ -86,30 +97,37 @@ function App() {
         </MbMap> }
       </div>
       <div style={{
-        display: 'flex'
+        flex: 'none',
       }}>
-        <button
-          onClick={() => {
-            setRunning(!running)
-          }}
-          style={{
-            height: '25px'
-          }}
-        >
-          <span role="img" aria-label="play/pause">{ running ? '⏸' : '▶️'}</span>
-        </button>
-        <input type="range"
-          min={datesArray[0]}
-          max={datesArray[datesArray.length - 1]}
-          step={1000 * 60 * 15}
-          value={timestamp}
-          onInput={event => { setTimestamp(Number(event.currentTarget.value)) }}
-          style={{
-            width: '90vw',
-            height: '20px'
-          }}
-          ref={r => { _inputRef = r}}
-        />
+        <div style={{
+          display: 'flex',
+          width: '100vw',
+          flexFlow: 'row',
+        }}>
+          <button
+            onClick={() => {
+              setRunning(!running)
+            }}
+            style={{
+              height: '25px',
+              flex: 'none',
+            }}
+          >
+            <span role="img" aria-label="play/pause">{ running ? '⏸' : '▶️'}</span>
+          </button>
+          <input type="range"
+            min={datesArray[0]}
+            max={datesArray[datesArray.length - 1]}
+            step={1000 * 60 * 15}
+            value={timestamp}
+            onInput={event => { setTimestamp(Number(event.currentTarget.value)) }}
+            style={{
+              height: '20px',
+              flex: 'auto',
+            }}
+            ref={r => { _inputRef = r}}
+          />
+        </div>
       </div>
     </div>
   );
