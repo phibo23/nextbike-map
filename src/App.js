@@ -119,7 +119,7 @@ function App() {
             min={datesArray[0]}
             max={datesArray[datesArray.length - 1]}
             step={1000 * 60 * 15}
-            value={timestamp}
+            defaultValue={timestamp}
             onInput={event => { setTimestamp(Number(event.currentTarget.value)) }}
             style={{
               height: '20px',
