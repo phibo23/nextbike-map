@@ -1,6 +1,6 @@
 {
-  "name": "dasfestnextbike",
-  "homepage": "https://www.phb23.io/coding/dasfestnextbike",
+  "name": "nextbike-map",
+  "homepage": "https://www.phb23.io/coding/nextbike-map",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

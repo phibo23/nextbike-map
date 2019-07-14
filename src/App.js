@@ -23,7 +23,7 @@ function App() {
   React.useEffect(() => {
     let newData = _serverData[timestamp]
     if (typeof newData === 'undefined') {
-      fetch('https://www.phb23.io/coding/dasfestnextbike_data/' + _getFileName(timestamp))
+      fetch('https://www.phb23.io/coding/nextbike-map_data/' + _getFileName(timestamp))
         .then(response => response.json())
         .then(json => {
           newData = {
