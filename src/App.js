@@ -17,6 +17,7 @@ function App() {
 
   const [timestamp, setTimestamp] = React.useState(minDate)
   const [stepSize, setStepSize] = React.useState(15)
+  const [drawLines, setDrawLines] = React.useState(false)
 
   const [data, setData] = React.useState()
   React.useEffect(() => {
@@ -61,6 +62,9 @@ function App() {
   return (
     <div
       className="App"
+      style={{
+        fontFamily: 'sans-serif'
+      }}
     >
       <Div100vh style={{
         display: 'flex',
@@ -74,7 +78,6 @@ function App() {
           textAlign: 'center',
           fontSize: 'larger',
           margin: '5px',
-          fontFamily: 'sans-serif'
         }}>
           { _formatDate(timestamp) } | { data ? data.features.length + ' bikes available' : ''}
         </p>
@@ -91,7 +94,33 @@ function App() {
           bounds={initialBounds}
           onLoad={e => {e._map.resize()}}
         >
-          { data && <MbLayer key="circles"
+          { !!drawLines && <MbLayer key="lines"
+            id="lines"
+            paint={{
+              'line-color': 'red',
+              'line-width': 1,
+              // XXX does not work ?? https://docs.mapbox.com/mapbox-gl-js/example/line-gradient/
+              'line-gradient': [
+                'interpolate',
+                ['linear'],
+                ['line-progress'],
+                0, "#fee",
+                0.4, "#fdd",
+                0.6, "#fcc",
+                0.8, "#fbb",
+                0.9, "#faa",
+                1, "#f00"
+              ],
+              'line-opacity': 0.5
+            }}
+            source={{
+              type: 'geojson',
+              data: _buildLineStrings(_serverData),
+              lineMetrics: true,
+            }}
+            type='line'
+          />}
+          { !!data && <MbLayer key="circles"
             id="circles"
             paint={{
               'circle-color': 'red',
@@ -141,6 +170,15 @@ function App() {
             <option value={30}>30m</option>
             <option value={60}>1h</option>
           </select>
+          <label>
+            <input
+              type="checkbox"
+              onChange={event => {
+                setDrawLines(Boolean(event.currentTarget.checked))
+              }}
+            />
+            draw lines
+          </label>
         </div>
       </div>
       </Div100vh>
@@ -159,6 +197,25 @@ const _getFileName = (timestamp) => {
 }
 
 const _serverData = {}
+
+const _buildLineStrings = sd => {
+  const result = {
+    type: 'GeometryCollection',
+    geometries: {}
+  }
+  Object.keys(sd).forEach(k => {
+    const fc = sd[k]
+    fc.features.forEach(f => {
+      result.geometries[f.properties.name] = result.geometries[f.properties.name] || {
+        type: 'LineString',
+        coordinates: []
+      }
+      result.geometries[f.properties.name].coordinates.push(f.geometry.coordinates)
+    })
+  })
+  result.geometries = Object.values(result.geometries)
+  return result
+}
 
 let _interval = false
 
