@@ -3,6 +3,8 @@ import { DateTime } from 'luxon'
 import { MbMarkerLayer, MbMap } from '@raumobil/map-react'
 import Div100vh from 'react-div-100vh'
 
+const initialBounds = [[8.33417,48.950746],[8.480613,49.0554349]]
+
 function App() {
   const datesArray = []
   const minDate = DateTime.fromFormat('201907120000', 'yyyyMMddHHmm').toMillis()
@@ -85,7 +87,7 @@ function App() {
         { <MbMap
           accessToken="pk.eyJ1IjoicGJvaG5lbnN0ZW5nZWwiLCJhIjoiY2p5MGlicTJsMDJqMjNsbGgzeTZ1cGo0NCJ9.HG5qqanqqOLUF0ykgLMDdQ"
           mbStyle="mapbox://styles/pbohnenstengel/cjy0ihz7o02pq1dqvn7t1x83b"
-          bounds={[[8.33417,48.950746],[8.480613,49.0554349]]}
+          bounds={initialBounds}
           onLoad={e => {e._map.resize()}}
         >
           { data && <MbMarkerLayer
