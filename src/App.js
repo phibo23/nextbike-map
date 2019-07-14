@@ -1,6 +1,7 @@
 import React from 'react'
 import { DateTime } from 'luxon'
 import { MbMarkerLayer, MbMap } from '@raumobil/map-react'
+import Div100vh from 'react-div-100vh'
 
 function App() {
   const datesArray = []
@@ -57,12 +58,12 @@ function App() {
   return (
     <div
       className="App"
-      style={{
-        display: 'flex',
-        height: '100vh',
-        flexFlow: 'column',
-      }}
     >
+      <Div100vh style={{
+        display: 'flex',
+        height: '100rvh',
+        flexFlow: 'column',
+      }}>
       <div style={{
         flex: 'none',
       }}>
@@ -85,6 +86,7 @@ function App() {
           accessToken="pk.eyJ1IjoicGJvaG5lbnN0ZW5nZWwiLCJhIjoiY2p5MGlicTJsMDJqMjNsbGgzeTZ1cGo0NCJ9.HG5qqanqqOLUF0ykgLMDdQ"
           mbStyle="mapbox://styles/pbohnenstengel/cjy0ihz7o02pq1dqvn7t1x83b"
           bounds={[[8.33417,48.950746],[8.480613,49.0554349]]}
+          onLoad={e => {e._map.resize()}}
         >
           { data && <MbMarkerLayer
             id="bikes"
@@ -132,6 +134,7 @@ function App() {
           />
         </div>
       </div>
+      </Div100vh>
     </div>
   );
 }
