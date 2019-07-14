@@ -1,6 +1,6 @@
 import React from 'react'
 import { DateTime } from 'luxon'
-import { MbMarkerLayer, MbMap } from '@raumobil/map-react'
+import { MbLayer, MbMap } from '@raumobil/map-react'
 import Div100vh from 'react-div-100vh'
 
 const initialBounds = [[8.33417,48.950746],[8.480613,49.0554349]]
@@ -21,7 +21,7 @@ function App() {
   React.useEffect(() => {
     let newData = _serverData[timestamp]
     if (typeof newData === 'undefined') {
-      fetch('../dasfestnextbike_data/' + _getFileName(timestamp))
+      fetch('https://www.phb23.io/coding/dasfestnextbike_data/' + _getFileName(timestamp))
         .then(response => response.json())
         .then(json => {
           newData = {
@@ -75,13 +75,13 @@ function App() {
           margin: '5px',
           fontFamily: 'sans-serif'
         }}>
-          { _formatDate(timestamp) }
+          { _formatDate(timestamp) } | { data ? data.features.length + ' bikes available' : ''}
         </p>
       </div>
       <div
         style={{
           flex: 'auto',
-          webkitFlex: '1 1 100%', // XXX safari hack
+          'WebkitFlex': '1 1 100%', // XXX safari hack
         }}
       >
         { <MbMap
@@ -90,16 +90,17 @@ function App() {
           bounds={initialBounds}
           onLoad={e => {e._map.resize()}}
         >
-          { data && <MbMarkerLayer
-            id="bikes"
-            data={data}
-            circleConfig={{
-              'circle-radius': 5,
-              'circle-color': 'red'
+          { data && <MbLayer key="circles"
+            id="circles"
+            paint={{
+              'circle-color': 'red',
+              'circle-radius': 2,
             }}
-            smallIconStart={99}
-            smallIcon={<div/>}
-            largeIcon={<div/>}
+            source={{
+              type: 'geojson',
+              data: data,
+            }}
+            type='circle'
           /> }
         </MbMap> }
       </div>
