@@ -75,15 +75,18 @@ function App() {
           { _formatDate(timestamp) }
         </p>
       </div>
-      <div style={{
-        flex: 'auto',
-      }}>
-        { data && <MbMap
+      <div
+        style={{
+          flex: 'auto',
+          webkitFlex: '1 1 100%', // XXX safari hack
+        }}
+      >
+        { <MbMap
           accessToken="pk.eyJ1IjoicGJvaG5lbnN0ZW5nZWwiLCJhIjoiY2p5MGlicTJsMDJqMjNsbGgzeTZ1cGo0NCJ9.HG5qqanqqOLUF0ykgLMDdQ"
           mbStyle="mapbox://styles/pbohnenstengel/cjy0ihz7o02pq1dqvn7t1x83b"
           bounds={[[8.33417,48.950746],[8.480613,49.0554349]]}
         >
-          <MbMarkerLayer
+          { data && <MbMarkerLayer
             id="bikes"
             data={data}
             circleConfig={{
@@ -93,7 +96,7 @@ function App() {
             smallIconStart={99}
             smallIcon={<div/>}
             largeIcon={<div/>}
-          />
+          /> }
         </MbMap> }
       </div>
       <div style={{
