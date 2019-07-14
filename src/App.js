@@ -89,8 +89,8 @@ function App() {
         }}
       >
         { <MbMap
-          accessToken="pk.eyJ1IjoicGJvaG5lbnN0ZW5nZWwiLCJhIjoiY2p5MGlicTJsMDJqMjNsbGgzeTZ1cGo0NCJ9.HG5qqanqqOLUF0ykgLMDdQ"
-          mbStyle="mapbox://styles/pbohnenstengel/cjy0ihz7o02pq1dqvn7t1x83b"
+          accessToken={process.env['REACT_APP_MAPBOX_TOKEN']}
+          mbStyle={process.env['REACT_APP_MAPBOX_STYLE']}
           bounds={initialBounds}
           onLoad={e => {e._map.resize()}}
         >
@@ -99,23 +99,23 @@ function App() {
             paint={{
               'line-color': 'red',
               'line-width': 1,
-              // XXX does not work ?? https://docs.mapbox.com/mapbox-gl-js/example/line-gradient/
+              // https://docs.mapbox.com/mapbox-gl-js/example/line-gradient/
               'line-gradient': [
                 'interpolate',
                 ['linear'],
                 ['line-progress'],
-                0, "#fee",
-                0.4, "#fdd",
-                0.6, "#fcc",
-                0.8, "#fbb",
+                0, "#eee",
+                0.4, "#ddd",
+                0.6, "#ccc",
+                0.8, "#bbb",
                 0.9, "#faa",
                 1, "#f00"
               ],
-              'line-opacity': 0.5
+              'line-opacity': 0.2
             }}
             source={{
               type: 'geojson',
-              data: _buildLineStrings(_serverData),
+              data: drawLines && _buildLineStrings(_serverData),
               lineMetrics: true,
             }}
             type='line'
@@ -188,7 +188,14 @@ function App() {
 
 const _formatDate = (timestamp) => {
   const d = new Date(timestamp)
-  return d.toLocaleString()
+  return d.toLocaleString('de-DE', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute:'2-digit',
+  })
 }
 
 const _getFileName = (timestamp) => {
