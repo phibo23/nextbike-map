@@ -16,6 +16,7 @@ function App() {
   }
 
   const [timestamp, setTimestamp] = React.useState(minDate)
+  const [stepSize, setStepSize] = React.useState(15)
 
   const [data, setData] = React.useState()
   React.useEffect(() => {
@@ -126,7 +127,7 @@ function App() {
           <input type="range"
             min={datesArray[0]}
             max={datesArray[datesArray.length - 1]}
-            step={1000 * 60 * 15}
+            step={1000 * 60 * stepSize}
             defaultValue={timestamp}
             onInput={event => { setTimestamp(Number(event.currentTarget.value)) }}
             style={{
@@ -135,6 +136,11 @@ function App() {
             }}
             ref={r => { _inputRef = r}}
           />
+          <select onChange={event => {setStepSize(Number(event.currentTarget.value))}}>
+            <option value={15}>15m</option>
+            <option value={30}>30m</option>
+            <option value={60}>1h</option>
+          </select>
         </div>
       </div>
       </Div100vh>
